@@ -1,0 +1,230 @@
+class Personaje {
+  String nombre;
+  int ataque;
+  int vida;
+  int rep;
+
+
+  Personaje (String nombre_, int ataque_,int vida_, int rep_){
+    nombre = nombre_;
+    ataque = ataque_;
+    vida = vida_;
+    rep = rep_; 
+  }
+  
+  void display() {
+      Courage();
+      Shirley();
+    }
+  
+  
+  void Courage(){
+    fill(#24FAFF);
+    rect(120,200,100,100);
+    textSize(50);
+    text("C",140,350);
+  }
+  
+  void Shirley(){
+    fill(0,0,255);
+    rect(300,200,100,100);
+    textSize(50);
+    text("S",320,350);
+  }
+}
+
+
+Personaje Seleccion1;
+Personaje Seleccion2;
+Personaje jugador1;
+Personaje jugador2;
+
+
+void setup(){
+  size(1000,650);
+  //img = loadImage("Muriel.png");
+  //img2 = loadImage("Justo.png");
+
+  Seleccion1 = new Personaje ("Courage",10,20,0);
+  Seleccion2 = new Personaje ("Shirley",10,20,0);
+}
+
+
+
+int pantalla = 0;
+int turno = 1;
+int turnoDeSeleccion = 1;
+char sj1;
+char sj2;
+int ganador;
+
+
+
+void draw (){
+  switch (pantalla){
+    case 0:
+    intro();
+    break;
+    
+    case 1:
+    historia();
+    break;
+    
+    case 2:
+    seleccion();
+    break;
+    
+    case 3:
+    pelea();
+    break;
+    
+    case 4:
+    fin();
+    break;
+    
+  }
+}
+
+void keyPressed(){
+  switch(pantalla){
+    case 0: //intro
+    if (key == ENTER || key == ENTER){
+      pantalla=1;
+    }
+    break;  
+    
+    case 1:  //historia
+    if ((key == 'O'|| key == 'o')){
+      pantalla=2;
+    }
+    break;
+    
+    case 2:  //seleccion
+    if(turnoDeSeleccion == 1){
+      if (key == 'C' || key == 'c'){
+        turnoDeSeleccion = 2;
+      }
+    }
+    if(turnoDeSeleccion == 2){
+      if (key == 'S' || key == 's'){
+      }
+      
+      switch(sj1){
+        case 'a':    //a = j1 lo voy a extender con los valores de mi personaje 1
+        jugador1 = new Personaje ("Courage",10,20,0);
+        break;
+        
+        case 'b':    //b = j1 lo voy a extender con los valores de mi personaje 2;
+        jugador1 = new Personaje ("Shirley",10,20,1);
+        break;
+        }
+
+      switch(sj2){
+        case 'a':    //a = j1 lo voy a extender con los valores de mi personaje 1
+        jugador1 = new Personaje ("Courage",10,20,0);
+        break;
+        
+        case 'b':    //b = j1 lo voy a extender con los valores de mi personaje 2;
+        jugador1 = new Personaje ("Shirley",10,20,1);
+        break;
+        }
+        
+        pantalla = 3;
+    }
+    break;
+    
+    case 3:  //pelea
+    if (key == 'A' || key == 'a'){
+      if (turno == 1){
+        jugador2.vida = jugador2.vida - jugador1.ataque;
+        turno = 2;
+      }
+      
+      if(turno == 2){
+        jugador1.vida = jugador1.vida - jugador2.ataque;
+        turno = 1;
+      }
+    }
+    
+    if (key == 'F' || key == 'f'){
+      pantalla = 0;
+      sj1 = 0;
+      sj2 = 0;
+      turno = 1;
+      turnoDeSeleccion = 1;
+      ganador = 0;
+    }
+    break;
+    
+    case 4:  //fin
+    if (key == ENTER){
+      pantalla = 2;
+      sj1 = 0;
+      sj2 = 0;
+      turno = 1;
+      turnoDeSeleccion = 1;
+      ganador = 0;
+    }
+    break;
+  }
+}
+
+
+
+void intro(){
+  println("pantalla " + pantalla);
+  background(0);
+  fill(0,255,0);
+  textSize(70);
+  text("Courage's Night Terrors",100,200);
+  textSize(40);
+  text("Presione ENTER para comenzar",200,400);
+}
+
+
+void historia(){
+  println("pantalla " + pantalla);
+  background(255);
+  fill(0);
+  textSize(30);
+  text("Muriel, Justo y coraje fueron al circo pero aparecieron unos monstruos que intentarán llevarse a Muriel y a Justo, ¡ayuda a coraje a salvarlos!.",50,50,950,500);
+  text("Presiona E para empezar",300,500);
+}
+
+
+void seleccion(){
+  background(255);
+  println("pantalla " + pantalla);
+  textSize(20);
+  text("Jugador 1 presiona primero la letra que representa al personaje",100,50);
+  text("Jugador 2 presiona después la letra que representa al personaje",100,100);
+  Seleccion1.display();
+  Seleccion2.display();
+}
+
+
+void pelea(){
+  jugador1.display();
+  jugador2.display();
+  
+  if (jugador1.vida <= 0){
+    ganador = 2;
+    pantalla = 3;
+  }
+  
+  if (jugador2.vida <= 0){
+    ganador = 1;
+    pantalla = 3;
+  }
+}
+
+
+void fin(){
+  if(ganador == 1){
+    jugador1.display();
+  }
+  
+  if (ganador == 2){
+    jugador2.display();
+  }
+}
